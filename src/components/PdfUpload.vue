@@ -7,7 +7,7 @@ return;
 const formData = new FormData();
 formData.append("pdf", this.selectedFile);
 
-api.post("/upload_endpoint", formData)
+this.$axios.post("/upload_endpoint", formData)
 .then(response => {
 console.log("File uploaded successfully:", response.data);
 })

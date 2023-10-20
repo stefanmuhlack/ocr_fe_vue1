@@ -1,30 +1,17 @@
-<template>
-  <div>
-    <h2>Upload PDF</h2>
-    <input type="file" @change="handleFileUpload" accept=".pdf">
-    <button @click="uploadPDF">Upload</button>
-  </div>
-</template>
+uploadPDF() {
+if (!this.selectedFile) {
+console.error("No file selected");
+return;
+}
 
-<script>
-export default {
-  data() {
-    return {
-      selectedFile: null,
-    };
-  },
-  methods: {
-    handleFileUpload(event) {
-      this.selectedFile = event.target.files[0];
-    },
-    uploadPDF() {
-      // Implement the code to upload the selected PDF file to your backend here
-      // You can use Axios or another HTTP library for this purpose
-    },
-  },
-};
-</script>
+const formData = new FormData();
+formData.append("pdf", this.selectedFile);
 
-<style scoped>
-/* Add styles for this component */
-</style>
+this.$axios.post("/pdf/upload/", formData)
+.then(response => {
+console.log("File uploaded successfully:", response.data);
+})
+.catch(error => {
+console.error("File upload failed:", error);
+});
+}
