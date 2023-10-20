@@ -1,72 +1,43 @@
-const UploadPDF = () => import(/* webpackChunkName: "upload-pdf" */ '../components/UploadPDF.vue')
-const OCRResult = () => import(/* webpackChunkName: "ocr-result" */ '../components/OCRResult.vue')
+import Vue from 'vue';
+import Router from 'vue-router';
 
-const routes = [
-    {
-        path: '/',
-        name: 'UploadPDF',
-        component: UploadPDF
-    },
-    {
-        path: '/ocr-result',
-        name: 'OCRResult',
-        component: OCRResult
-    }
-]
-const OCRDetail = () => import(/* webpackChunkName: "ocr-detail" */ '../components/OCRDetail.vue')
-
-const routes = [
-    // ... other routes
-    {
-        path: '/ocr-result',
-        name: 'OCRResult',
-        component: OCRResult,
-        children: [
-            {
-                path: 'detail',
-                component: OCRDetail
-            }
-        ]
-    }
-]
-router.beforeEach((to, from, next) => {
-    if (to.name !== 'UploadPDF' && !isAuthenticated) next({ name: 'UploadPDF' })
-    else next()
-})
-const NotFound = () => import(/* webpackChunkName: "not-found" */ '../components/NotFound.vue')
-
-const routes = [
-    // ... other routes
-    {
-        path: '*',
-        name: 'NotFound',
-        component: NotFound
-    }
-]
-const router = new VueRouter({
-
-}
-const routes = [
-    {
-        path: '/',
-        name: 'UploadPDF',
-        component: UploadPDF,
-        meta: { title: 'Upload PDF' }
-    },
-    {
-        path: '/ocr-result',
-        name: 'OCRResult',
-        component: OCRResult,
-        meta: { title: 'OCR Result' }
-    }
-]
+// Lazy-loaded components
+const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue');
+const UploadPDF = () => import(/* webpackChunkName: "upload-pdf" */ '../components/UploadPDF.vue');
+const OCRResult = () => import(/* webpackChunkName: "ocr-result" */ '../components/OCRResult.vue');
 const PDFPreview = () => import(/* webpackChunkName: "pdf-preview" */ '../components/PDFPreview.vue');
+const TemplateCreator = () => import(/* webpackChunkName: "template-creator" */ '../components/TemplateCreator.vue');
 
-const routes = [
-    // ... other routes
-    {
-        path: '/pdf-preview',
-        name: 'PDFPreview',
-        component: PDFPreview,
-    },
-];
+Vue.use(Router);
+
+export default new Router({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/upload',
+            name: 'upload-pdf',
+            component: UploadPDF
+        },
+        {
+            path: '/ocr-result',
+            name: 'ocr-result',
+            component: OCRResult
+        },
+        {
+            path: '/pdf-preview',
+            name: 'pdf-preview',
+            component: PDFPreview
+        },
+        {
+            path: '/template-creator',
+            name: 'template-creator',
+            component: TemplateCreator
+        }
+    ]
+});
