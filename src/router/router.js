@@ -60,3 +60,13 @@ const routes = [
         meta: { title: 'OCR Result' }
     }
 ]
+const PDFPreview = () => import(/* webpackChunkName: "pdf-preview" */ '../components/PDFPreview.vue');
+
+const routes = [
+    // ... other routes
+    {
+        path: '/pdf-preview',
+        name: 'PDFPreview',
+        component: PDFPreview,
+    },
+];
