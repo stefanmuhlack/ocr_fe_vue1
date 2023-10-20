@@ -1,17 +1,25 @@
-uploadPDF() {
-if (!this.selectedFile) {
-console.error("No file selected");
-return;
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router/router'
+import Vuex from 'vuex'
+
+Vue.config.productionTip = false
+
+// Use Vuex
+Vue.use(Vuex)
+
+// Create a new Vuex store
+const store = new Vuex.Store({
+state: {
+// your state here
+},
+mutations: {
+// your mutations here
 }
-
-const formData = new FormData();
-formData.append("pdf", this.selectedFile);
-
-this.$axios.post("/pdf/upload/", formData)
-.then(response => {
-console.log("File uploaded successfully:", response.data);
 })
-.catch(error => {
-console.error("File upload failed:", error);
-});
-}
+
+new Vue({
+router,
+store,  // Add the store to the Vue instance
+render: h => h(App)
+}).$mount('#app')
