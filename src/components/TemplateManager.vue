@@ -1,6 +1,6 @@
 <template>
   <div class="template-manager">
-    <h2>Manage Templates</h2>
+    <h1>Template Management</h1>
     <div v-for="template in templates" :key="template.id">
       <p>{{ template.name }}</p>
       <button @click="editTemplate(template.id)">Edit</button>
@@ -13,11 +13,22 @@
 export default {
   data() {
     return {
-      templates: []
+      templates: [{ id: 1, name: 'Template 1'}, { id: 2, name: 'Template 2'}]
     };
   },
   methods: {
     editTemplate(id) {
+      // Add logic here for editing templates
+      this.$router.push({ name: 'editTemplate', params: { templateId: id } });
+    },
+    deleteTemplate(id) {
+      // Add logic here for deleting templates
+      this.templates = this.templates.filter(template => template.id !== id);
+    }
+  }
+};
+</script>
+
       // Logic to edit the template
     },
     deleteTemplate(id) {
