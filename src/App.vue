@@ -1,36 +1,46 @@
 <template>
   <div id="app">
     <header>
-      <h1>OCR Frontend</h1>
+      <h1>OCR Application</h1>
     </header>
-    <main>
-      <UploadPDF @uploadPDF="handleUpload" />
-      <PDFPreview :thumbnailSrc="pdfThumbnailSrc" @thumbnailClicked="handleThumbnailClick" />
-      <OCRResults :ocrText="ocrText" />
-    </main>
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/upload">Upload PDF</router-link>
+      <router-link to="/templates">Manage Templates</router-link>
+    </nav>
+    <router-view/>
+    <footer>
+      <p>© 2024 OCR App, Inc.</p>
+    </footer>
   </div>
 </template>
 
 <script>
-import PDFPreview from './components/PDFPreview.vue';
-
 export default {
-  components: {
-    // ... other components
-    PDFPreview,
-  },
-  data() {
-    return {
-      // ... other data properties
-      pdfThumbnailSrc: null,
-    };
-  },
-  methods: {
-    // ... other methods
-    handleThumbnailClick() {
-      // Handle the thumbnail click event
-      // For example, navigate to a detailed view of the PDF
-    },
+  name: 'App'
+};
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+header, footer {
+  background-color: #f2f2f2;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+nav a {
+  margin: 0 10px;
+}
+</style>
+
   },
 };
 </script>
