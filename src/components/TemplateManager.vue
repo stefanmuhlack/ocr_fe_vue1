@@ -6,7 +6,7 @@
       <button @click="editTemplate(template.id)">Edit</button>
       <button @click="deleteTemplate(template.id)">Delete</button>
     </div>
-    <p v-if="actionStatus">{{ actionStatus }}</p>
+    <p v-if="actionStatus" class="status">{{ actionStatus }}</p>
   </div>
 </template>
 
@@ -21,16 +21,15 @@ export default {
   methods: {
     editTemplate(id) {
       this.actionStatus = 'Editing...';
-      // Simulate editing logic
       setTimeout(() => {
-        this.actionStatus = 'Edit completed';
+        this.actionStatus = 'Edit completed successfully!';
       }, 1000);
     },
     deleteTemplate(id) {
       this.actionStatus = 'Deleting...';
       setTimeout(() => {
         this.templates = this.templates.filter(template => template.id !== id);
-        this.actionStatus = 'Delete completed';
+        this.actionStatus = 'Delete completed successfully!';
       }, 1000);
     }
   }
@@ -45,6 +44,9 @@ export default {
 button {
   margin: 5px;
 }
+.status {
+  margin-top: 10px;
+  font-weight: bold;
+}
 </style>
 
-</script>
