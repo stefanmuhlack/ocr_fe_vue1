@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -7,7 +8,8 @@ export default new Vuex.Store({
   state: {
     templates: [],
     currentTemplate: null,
-    uploadStatus: ''
+    uploadStatus: '',
+    error: null
   },
   mutations: {
     setTemplates(state, templates) {
@@ -18,20 +20,25 @@ export default new Vuex.Store({
     },
     setUploadStatus(state, status) {
       state.uploadStatus = status;
+    },
+    setError(state, error) {
+      state.error = error;
     }
   },
   actions: {
-    fetchTemplates({ commit }) {
-      // Simulate fetching templates from an API
-      commit('setTemplates', [{ id: 1, name: 'Template 1' }, { id: 2, name: 'Template 2' }]);
+    async fetchTemplates({ commit }) {
+      try {
+        const response = await axios.get('/api/templates');
+        commit('setTemplates', response.data);
+      } catch (error) {
+        commit('setError', 'Failed to fetch templates');
+      }
     },
     selectTemplate({ commit }, templateId) {
-      // Simulate selecting a template
       const template = this.state.templates.find(t => t.id === templateId);
       commit('setCurrentTemplate', template);
     },
     updateUploadStatus({ commit }, status) {
-      // Update upload status
       commit('setUploadStatus', status);
     }
   }
