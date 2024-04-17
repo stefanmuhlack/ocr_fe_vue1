@@ -4,9 +4,9 @@
       <h1>OCR Application</h1>
     </header>
     <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/upload">Upload PDF</router-link>
-      <router-link to="/templates">Manage Templates</router-link>
+      <router-link to="/" class="nav-link">Home</router-link>
+      <router-link to="/upload" class="nav-link">Upload PDF</router-link>
+      <router-link to="/templates" class="nav-link">Manage Templates</router-link>
     </nav>
     <router-view/>
     <footer>
@@ -36,11 +36,17 @@ header, footer {
   text-align: center;
 }
 
-nav a {
+nav a.nav-link {
   margin: 0 10px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+nav a.nav-link:hover {
+  background-color: #e1e1e1;
+  border-color: #ccc;
 }
 </style>
 
-  },
-};
-</script>
