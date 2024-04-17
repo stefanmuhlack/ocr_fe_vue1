@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     templates: [],
-    currentTemplate: null
+    currentTemplate: null,
+    uploadStatus: ''
   },
   mutations: {
     setTemplates(state, templates) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     setCurrentTemplate(state, template) {
       state.currentTemplate = template;
+    },
+    setUploadStatus(state, status) {
+      state.uploadStatus = status;
     }
   },
   actions: {
@@ -25,6 +29,10 @@ export default new Vuex.Store({
       // Simulate selecting a template
       const template = this.state.templates.find(t => t.id === templateId);
       commit('setCurrentTemplate', template);
+    },
+    updateUploadStatus({ commit }, status) {
+      // Update upload status
+      commit('setUploadStatus', status);
     }
   }
 });
