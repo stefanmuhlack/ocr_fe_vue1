@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'dark-theme': isDarkTheme }">
     <header>
       <h1>OCR Application</h1>
+      <button @click="toggleTheme">Toggle Theme</button>
     </header>
     <nav>
       <router-link to="/" class="nav-link">Home</router-link>
@@ -17,17 +18,24 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      isDarkTheme: false
+    };
+  },
+  methods: {
+    toggleTheme() {
+      this.isDarkTheme = !this.isDarkTheme;
+    }
+  }
 };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<style scoped>
+.dark-theme {
+  background-color: #333;
+  color: #fff;
 }
 
 header, footer {
