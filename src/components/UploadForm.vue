@@ -1,10 +1,10 @@
 <template>
   <div class="upload-form">
-    <h1>Upload Your PDF</h1>
+    <h1>Upload Your Document</h1>
     <input type="file" @change="handleFileUpload" />
-    <button @click="submitFile">Upload File</button>
+    <button @click="submitFile" :disabled="uploading">Upload File</button>
     <progress v-if="uploading" max="100" :value="uploadProgress"></progress>
-    <p v-if="uploadStatus">{{ uploadStatus }}</p>
+    <p v-if="uploadStatus" class="status">{{ uploadStatus }}</p>
     <p v-if="uploadError" class="error">{{ uploadError }}</p>
   </div>
 </template>
@@ -22,28 +22,26 @@ export default {
   },
   methods: {
     handleFileUpload(event) {
-      this.file = event.target.files[0];
+      const selectedFile = event.target.files[0];
+      if (!this.validateFile(selectedFile)) {
+        this.uploadError = 'Invalid file type. Only PDFs are allowed.';
+        return;
+      }
+      this.file = selectedFile;
       this.uploadStatus = 'File ready for upload';
-      this.uploadError = ''; // Reset error on new upload
+      this.uploadError = '';
+    },
+    validateFile(file) {
+      return file.type === 'application/pdf';
     },
     submitFile() {
       this.uploading = true;
       this.uploadStatus = 'Uploading...';
-      // Simulate upload progress
-      const interval = setInterval(() => {
-        if (this.uploadProgress < 100) {
-          this.uploadProgress += 10;
-        } else {
-          clearInterval(interval);
-          this.uploadStatus = 'Upload Complete';
-          this.uploading = false;
-          // Simulate error handling
-          if (this.file.size > 5000000) { // 5MB for example
-            this.uploadError = 'File is too large. Please upload a smaller file.';
-            this.uploadStatus = '';
-          }
-        }
-      }, 300);
+      setTimeout(() => {
+        this.uploadProgress = 100;
+        this.uploadStatus = 'Upload Successful!';
+        this.uploading = false;
+      }, 1500);
     }
   }
 };
@@ -54,9 +52,17 @@ export default {
   text-align: center;
   margin-top: 20px;
 }
+.progress {
+  width: 100%;
+  margin-top: 10px;
+}
 .error {
   color: red;
 }
+.status {
+  color: green;
+}
 </style>
+
 
 
