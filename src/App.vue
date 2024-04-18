@@ -9,6 +9,9 @@
       <router-link to="/upload" class="nav-link">Upload PDF</router-link>
       <router-link to="/templates" class="nav-link">Manage Templates</router-link>
     </nav>
+    <modal v-if="showModal" @close="showModal = false">
+      Welcome to the OCR Application!
+    </modal>
     <router-view/>
     <footer>
       <p>© 2024 OCR App, Inc.</p>
@@ -17,11 +20,17 @@
 </template>
 
 <script>
+import Modal from './components/Modal.vue';
+
 export default {
   name: 'App',
+  components: {
+    Modal
+  },
   data() {
     return {
-      isDarkTheme: false
+      isDarkTheme: false,
+      showModal: true
     };
   },
   methods: {
