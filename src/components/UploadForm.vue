@@ -2,7 +2,7 @@
   <div class="upload-form">
     <h1>Upload Your Document</h1>
     <input type="file" @change="handleFileUpload" />
-    <button @click="submitFile" :disabled="uploading">Upload File</button>
+    <button @click="submitFile" :disabled="uploading || !file">Upload File</button>
     <progress v-if="uploading" max="100" :value="uploadProgress"></progress>
     <p v-if="uploadStatus" class="status">{{ uploadStatus }}</p>
     <p v-if="uploadError" class="error">{{ uploadError }}</p>
@@ -24,7 +24,7 @@ export default {
     handleFileUpload(event) {
       const selectedFile = event.target.files[0];
       if (!this.validateFile(selectedFile)) {
-        this.uploadError = 'Invalid file type. Only PDFs are allowed.';
+        this.uploadError = 'Invalid file type or size. Only PDFs under 5MB are allowed.';
         return;
       }
       this.file = selectedFile;
@@ -32,7 +32,7 @@ export default {
       this.uploadError = '';
     },
     validateFile(file) {
-      return file.type === 'application/pdf';
+      return file.type === 'application/pdf' && file.size <= 5000000;
     },
     submitFile() {
       this.uploading = true;
