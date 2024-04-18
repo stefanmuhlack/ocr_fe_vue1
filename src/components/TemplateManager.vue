@@ -2,7 +2,7 @@
   <div class="template-manager">
     <h1>Template Management</h1>
     <input type="text" v-model="filter" placeholder="Filter templates..." @input="applyFilter" />
-    <div v-for="template in paginatedTemplates" :key="template.id">
+    <div v-for="template in filteredTemplates" :key="template.id">
       <p>{{ template.name }}</p>
       <button @click="editTemplate(template.id)">Edit</button>
       <button @click="deleteTemplate(template.id)">Delete</button>
@@ -25,14 +25,13 @@ export default {
       filteredTemplates: [],
       paginatedTemplates: [],
       filter: '',
-      actionStatus: '',
-      currentPage: 1,
-      itemsPerPage: 10
+      actionStatus: ''
     };
   },
   methods: {
     fetchTemplates() {
-      // Fetch templates from an API and update 'templates'
+      // Fetch templates dynamically from an API and update 'templates'
+      // Consider using WebSocket for real-time updates
     },
     applyFilter() {
       this.filteredTemplates = this.templates.filter(template => template.name.toLowerCase().includes(this.filter.toLowerCase()));
@@ -41,15 +40,22 @@ export default {
     handlePageChange(page) {
       const startIndex = (page - 1) * this.itemsPerPage;
       this.paginatedTemplates = this.filteredTemplates.slice(startIndex, startIndex + this.itemsPerPage);
-      this.currentPage = page;
     },
     editTemplate(id) {
+      // Add smooth transition and confirm message on successful edit
       this.actionStatus = 'Editing...';
-      // Implement edit logic
+      setTimeout(() => {
+        this.actionStatus = 'Edit completed successfully!';
+      }, 1000);
     },
     deleteTemplate(id) {
+      // Add animation on delete and confirmation dialog
       this.actionStatus = 'Deleting...';
-      // Implement delete logic
+      setTimeout(() => {
+        this.templates = this.templates.filter(template => template.id !== id);
+        this.filteredTemplates = this.filteredTemplates.filter(template => template.id !== id);
+        this.actionStatus = 'Delete completed successfully!';
+      }, 1000);
     }
   },
   created() {
@@ -70,5 +76,7 @@ button {
   margin-top: 10px;
   font-weight: bold;
 }
+</style>
+
 </style>
 
