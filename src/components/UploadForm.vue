@@ -24,7 +24,7 @@ export default {
     handleFileUpload(event) {
       const selectedFile = event.target.files[0];
       if (!this.validateFile(selectedFile)) {
-        this.uploadError = 'Invalid file type or size. Only PDFs under 5MB are allowed.';
+        this.uploadError = 'Invalid file type or size. Only PDF, TIFF, and PNG files under 5MB are allowed.';
         return;
       }
       this.file = selectedFile;
@@ -32,7 +32,7 @@ export default {
       this.uploadError = '';
     },
     validateFile(file) {
-      return file.type === 'application/pdf' && file.size <= 5000000;
+      return ['application/pdf', 'image/tiff', 'image/png'].includes(file.type) && file.size <= 5000000;
     },
     submitFile() {
       this.uploading = true;
