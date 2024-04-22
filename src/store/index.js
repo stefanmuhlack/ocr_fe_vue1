@@ -48,13 +48,3 @@ export default new Vuex.Store({
     }
   }
 });
-        },
-      },
-      actions: {
-        updateUploadStatus({ commit }, status) {
-          commit('setUploadStatus', status);
-        },
-      }
-    }
-  }
-});

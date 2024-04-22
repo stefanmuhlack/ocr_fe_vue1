@@ -78,5 +78,13 @@ button {
 }
 </style>
 
-</style>
+// Path: src/components/Pagination.vue
+<template>
+  <div class="pagination
+    <button @click="changePage('prev')" :disabled="currentPage === 1">Previous</button>
+    <button v-for="page in totalPages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{ page }}</button>
+    <button @click="changePage('next')" :disabled="currentPage === totalPages">Next</button>
+  </div>
+</template>
+
 
