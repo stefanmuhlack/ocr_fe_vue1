@@ -1,21 +1,10 @@
 <template>
-  <div id="app" :class="{ 'dark-theme': isDarkTheme }">
+  <div id="app">
     <header>
       <h1>OCR Application</h1>
-      <button @click="toggleTheme">Toggle Theme</button>
     </header>
-    <nav>
-      <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/upload" class="nav-link">Upload PDF</router-link>
-      <router-link to="/templates" class="nav-link">Manage Templates</router-link>
-    </nav>
-    <modal v-if="showModal" @close="showModal = false">
-      Welcome to the OCR Application!
-    </modal>
-    <router-view/>
-    <footer>
-      <p>© 2024 OCR App, Inc.</p>
-    </footer>
+    <router-view />
+    <modal v-if="isModalVisible" @close="isModalVisible = false" />
   </div>
 </template>
 
@@ -23,12 +12,31 @@
 import Modal from './components/Modal.vue';
 
 export default {
-  name: 'App',
   components: {
     Modal
   },
   data() {
     return {
+      isModalVisible: false
+    };
+  },
+  methods: {
+    toggleModal() {
+      this.isModalVisible = !this.isModalVisible;
+    }
+  }
+};
+</script>
+
+<style scoped>
+#app {
+  text-align: center;
+  padding: 50px 0;
+}
+header {
+  margin-bottom: 20px;
+}
+</style>
       isDarkTheme: false,
       showModal: true
     };
