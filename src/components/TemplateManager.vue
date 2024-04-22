@@ -6,31 +6,12 @@
       <button @click="editTemplate(template.id)">Edit</button>
       <button @click="deleteTemplate(template.id)">Delete</button>
     </div>
+    <pagination :total-pages="totalPages" :current-page="currentPage" @change-page="handlePageChange"></pagination>
   </div>
 </template>
 
 <script>
-export default {
-  props: ['templates'],
-  methods: {
-    editTemplate(id) {
-      this.$emit('edit-template', id);
-    },
-    deleteTemplate(id) {
-      this.$emit('delete-template', id);
-    }
-  }
-};
-</script>
-
-<style scoped>
-.template-manager {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-</style>
+import Pagination from './Pagination.vue';
 
 export default {
   components: {
@@ -42,42 +23,53 @@ export default {
       filteredTemplates: [],
       paginatedTemplates: [],
       filter: '',
-      actionStatus: ''
+      currentPage: 1,
+      totalPages: 5  // Assume 5 pages for demo purposes
     };
   },
   methods: {
     fetchTemplates() {
-      // Fetch templates dynamically from an API and update 'templates'
-      // Consider using WebSocket for real-time updates
+      this.templates = [{ id: 1, name: 'Template 1' }, { id: 2, name: 'Template 2' }, { id: 3, name: 'Template 3' }]; // Static data for demonstration
+      this.applyFilter();
     },
     applyFilter() {
       this.filteredTemplates = this.templates.filter(template => template.name.toLowerCase().includes(this.filter.toLowerCase()));
-      this.handlePageChange(1);  // Reset to first page after filter
+      this.handlePageChange(this.currentPage);
     },
     handlePageChange(page) {
-      const startIndex = (page - 1) * this.itemsPerPage;
-      this.paginatedTemplates = this.filteredTemplates.slice(startIndex, startIndex + this.itemsPerPage);
+      const startIndex = (page - 1) * 10; // Assuming 10 items per page
+      this.paginatedTemplates = this.filteredTemplates.slice(startIndex, startIndex + 10);
     },
     editTemplate(id) {
-      // Add smooth transition and confirm message on successful edit
-      this.actionStatus = 'Editing...';
-      setTimeout(() => {
-        this.actionStatus = 'Edit completed successfully!';
-      }, 1000);
+      this.$emit('edit-template', id);
     },
     deleteTemplate(id) {
-      // Add animation on delete and confirmation dialog
-      this.actionStatus = 'Deleting...';
-      setTimeout(() => {
-        this.templates = this.templates.filter(template => template.id !== id);
-        this.filteredTemplates = this.filteredTemplates.filter(template => template.id !== id);
-        this.actionStatus = 'Delete completed successfully!';
-      }, 1000);
+      this.templates = this.templates.filter(template => template.id !== id);
+      this.filteredTemplates = this.filteredTemplates.filter(template => template.id !== id);
+      this.applyFilter();  // Reapply filter to update pagination
     }
   },
   created() {
     this.fetchTemplates();
   }
+};
+</script>
+
+<style scoped>
+.template-manager {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+button {
+  margin: 5px;
+}
+.status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+</style>
 };
 </script>
 
