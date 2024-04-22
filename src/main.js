@@ -1,32 +1,28 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
-import VueRouter from 'vue-router';
-import store from './store'; // Import Vuex store
+import router from './router';
+import store from './store';
 
-Vue.use(VueRouter);
-Vue.config.productionTip = false;
+const app = createApp(App);
+app.use(router);
+app.use(store);
 
-// Enable Vue DevTools based on environment
-Vue.config.devtools = process.env.NODE_ENV === 'development';
+app.mount('#app');
 
-// Lazy load routes
-const router = new VueRouter({
-  routes: [
-    { path: '/', component: () => import('./components/Home.vue') },
-    { path: '/upload', component: () => import('./components/UploadForm.vue') },
-    { path: '/templates', component: () => import('./components/TemplateManager.vue') }
-  ]
+// Error handling for Vue application
+app.config.errorHandler = (err, vm, info) => {
+  console.error(`Error: ${err.toString()}\nInfo: ${info}`);
+};
+
+// Global mixin to handle common functionalities
+app.mixin({
+  methods: {
+    notify(message, type) {
+      // Implement notification logic here, could integrate with a UI framework's notification system
+      console.log(`Notification: ${message} - Type: ${type}`);
+    }
+  }
 });
-
-// Initialize the main Vue instance
-new Vue({
-  render: h => h(App),
-  router, // Use the router
-  store,  // Integrate Vuex for state management
-  created() {
-    // Global error handler
-    this.$root.$on('error', (error) => {
-      console.error('Global error handler:', error);
       // Optionally display a user-friendly error message
     });
   }
