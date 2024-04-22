@@ -1,19 +1,36 @@
 <template>
   <div class="template-manager">
-    <h1>Template Management</h1>
-    <input type="text" v-model="filter" placeholder="Filter templates..." @input="applyFilter" />
-    <div v-for="template in filteredTemplates" :key="template.id">
+    <h1>Template Manager</h1>
+    <div v-for="template in templates" :key="template.id">
       <p>{{ template.name }}</p>
       <button @click="editTemplate(template.id)">Edit</button>
       <button @click="deleteTemplate(template.id)">Delete</button>
     </div>
-    <pagination :total-items="filteredTemplates.length" :items-per-page="itemsPerPage" @page-changed="handlePageChange" />
-    <p v-if="actionStatus" class="status">{{ actionStatus }}</p>
   </div>
 </template>
 
 <script>
-import Pagination from './Pagination.vue';
+export default {
+  props: ['templates'],
+  methods: {
+    editTemplate(id) {
+      this.$emit('edit-template', id);
+    },
+    deleteTemplate(id) {
+      this.$emit('delete-template', id);
+    }
+  }
+};
+</script>
+
+<style scoped>
+.template-manager {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+</style>
 
 export default {
   components: {
