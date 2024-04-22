@@ -1,19 +1,21 @@
-import globals from 'globals'
-import pluginVue from 'eslint-plugin-vue'
+import { defineConfig } from 'eslint';
 
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { FlatCompat } from '@eslint/eslintrc'
-import pluginJs from '@eslint/js'
-
-// mimic CommonJS variables -- not needed if using CommonJS
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({ baseDirectory: __dirname, recommendedConfig: pluginJs.configs.recommended })
-
-export default [
-  { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
-  { languageOptions: { globals: globals.browser } },
-  ...compat.extends('standard'),
+export default defineConfig({
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  extends: [
+    'plugin:vue/vue3-essential',
+    'eslint:recommended'
+  ],
+  parserOptions: {
+    ecmaVersion: 2021
+  },
+  rules: {
+    // Define custom rules here
+  }
+});
   ...pluginVue.configs['flat/essential']
 ]
