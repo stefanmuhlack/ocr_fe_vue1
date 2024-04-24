@@ -1,99 +1,66 @@
 <template>
   <div class="template-manager">
     <h1>Template Manager</h1>
-    <div v-for="template in templates" :key="template.id">
-      <p>{{ template.name }}</p>
-      <button @click="editTemplate(template.id)">Edit</button>
-      <button @click="deleteTemplate(template.id)">Delete</button>
+    <div v-if="error" class="error-message">{{ error }}</div>
+    <div>
+      <button @click="fetchTemplates">Refresh Templates</button>
+      <ul>
+        <li v-for="template in templates" :key="template.id">
+          <span>{{ template.name }}</span> - <span>{{ template.description }}</span>
+          <button @click="selectTemplate(template.id)">Edit</button>
+          <button @click="deleteTemplate(template.id)">Delete</button>
+        </li>
+      </ul>
     </div>
-    <pagination :total-pages="totalPages" :current-page="currentPage" @change-page="handlePageChange"></pagination>
   </div>
 </template>
 
 <script>
-import Pagination from './Pagination.vue';
+import { defineComponent, ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
-export default {
-  components: {
-    Pagination
-  },
-  data() {
-    return {
-      templates: [],
-      filteredTemplates: [],
-      paginatedTemplates: [],
-      filter: '',
-      currentPage: 1,
-      totalPages: 5  // Assume 5 pages for demo purposes
+export default defineComponent({
+  name: 'TemplateManager',
+  setup() {
+    const store = useStore();
+    const error = ref('');
+    const templates = ref([]);
+
+    onMounted(() => {
+      store.dispatch('fetchTemplates').catch(e => {
+        error.value = e.message;
+      });
+    });
+
+    const selectTemplate = (id) => {
+      store.commit('setCurrentTemplate', store.state.templates.find(t => t.id === id));
     };
-  },
-  methods: {
-    fetchTemplates() {
-      this.templates = [{ id: 1, name: 'Template 1' }, { id: 2, name: 'Template 2' }, { id: 3, name: 'Template 3' }]; // Static data for demonstration
-      this.applyFilter();
-    },
-    applyFilter() {
-      this.filteredTemplates = this.templates.filter(template => template.name.toLowerCase().includes(this.filter.toLowerCase()));
-      this.handlePageChange(this.currentPage);
-    },
-    handlePageChange(page) {
-      const startIndex = (page - 1) * 10; // Assuming 10 items per page
-      this.paginatedTemplates = this.filteredTemplates.slice(startIndex, startIndex + 10);
-    },
-    editTemplate(id) {
-      this.$emit('edit-template', id);
-    },
-    deleteTemplate(id) {
-      this.templates = this.templates.filter(template => template.id !== id);
-      this.filteredTemplates = this.filteredTemplates.filter(template => template.id !== id);
-      this.applyFilter();  // Reapply filter to update pagination
-    }
-  },
-  created() {
-    this.fetchTemplates();
+
+    const deleteTemplate = (id) => {
+      store.dispatch('deleteTemplate', id).then(() => {
+        store.dispatch('fetchTemplates');
+      }).catch(e => {
+        error.value = e.message;
+      });
+    };
+
+    return { error, templates, selectTemplate, deleteTemplate };
   }
-};
+});
 </script>
 
 <style scoped>
 .template-manager {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px;
-}
-button {
-  margin: 5px;
-}
-.status {
-  margin-top: 10px;
-  font-weight: bold;
-}
-</style>
-};
-</script>
-
-<style scoped>
-.template-manager {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
   text-align: center;
-  margin-top: 20px;
 }
-button {
-  margin: 5px;
-}
-.status {
-  margin-top: 10px;
-  font-weight: bold;
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
 }
 </style>
-
-// Path: src/components/Pagination.vue
-<template>
-  <div class="pagination
-    <button @click="changePage('prev')" :disabled="currentPage === 1">Previous</button>
-    <button v-for="page in totalPages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{ page }}</button>
-    <button @click="changePage('next')" :disabled="currentPage === totalPages">Next</button>
-  </div>
-</template>
-
 
