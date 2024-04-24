@@ -14,7 +14,8 @@ export default new Vuex.Store({
     templates: [],
     currentTemplate: null,
     uploadStatus: '',
-    error: null
+    error: null,
+    recentActivities: []
   },
   mutations: {
     setTemplates(state, templates) {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     setError(state, error) {
       state.error = error;
+    },
+    setRecentActivities(state, activities) {
+      state.recentActivities = activities;
     }
   },
   actions: {
@@ -45,6 +49,14 @@ export default new Vuex.Store({
     },
     updateUploadStatus({ commit }, status) {
       commit('setUploadStatus', status);
+    },
+    fetchRecentActivities({ commit }) {
+      try {
+        const response = await axios.get('/api/recent-activities');
+        commit('setRecentActivities', response.data);
+      } catch (error) {
+        errorHandler(error, commit);
+      }
     }
   }
 });
