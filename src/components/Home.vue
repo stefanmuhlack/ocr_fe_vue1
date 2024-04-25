@@ -39,3 +39,13 @@ export default defineComponent({
 }
 </style>
 
+});
+</script>
+
+<style scoped>
+.home {
+  padding: 20px;
+  text-align: center;
+}
+</style>
+
