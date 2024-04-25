@@ -36,7 +36,7 @@ export default defineComponent({
       store.commit('setCurrentTemplate', store.state.templates.find(t => t.id === id));
     };
 
-    const deleteTemplate = (id) => {
+    the deleteTemplate = (id) => {
       store.dispatch('deleteTemplate', id).then(() => {
         store.dispatch('fetchTemplates');
       }).catch(e => {
