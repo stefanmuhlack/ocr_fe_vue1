@@ -60,6 +60,18 @@ export default new Vuex.Store({
     }
   }
 });
+      commit('setUploadStatus', status);
+    },
+    fetchRecentActivities({ commit }) {
+      try {
+        const response = await axios.get('/api/recent-activities');
+        commit('setRecentActivities', response.data);
+      } catch (error) {
+        errorHandler(error, commit);
+      }
+    }
+  }
+});
     updateUploadStatus({ commit }, status) {
       commit('setUploadStatus', status);
     }
