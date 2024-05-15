@@ -2,13 +2,28 @@
   <div id="app">
     <header>
       <h1>OCR Application</h1>
-    </header>
-    <router-view />
-    <modal v-if="isModalVisible" @close="isModalVisible = false" />
-  </div>
+<template>
+  <v-app>
+    <v-main>
+      <router-view/>
+    </v-main>
+    <app-footer/>
+  </v-app>
 </template>
 
 <script>
+export default {
+  name: 'App'
+}
+</script>
+
+<style scoped>
+  .v-app {
+    background: #f5f5f5;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+  }
+</style>
 import Modal from './components/Modal.vue';
 
 export default {
