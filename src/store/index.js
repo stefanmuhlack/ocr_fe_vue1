@@ -20,21 +20,11 @@ export default new Vuex.Store({
   mutations: {
     setTemplates(state, templates) {
       state.templates = templates;
-    },
-    setCurrentTemplate(state, template) {
-      state.currentTemplate = template;
-    },
-    setUploadStatus(state, status) {
-      state.uploadStatus = status;
-    },
     setError(state, error) {
-      state.error = error;
-    },
-    setRecentActivities(state, activities) {
-      state.recentActivities = activities;
+      state.error = `Error: ${error.message}`;
+      console.error('Vuex Error:', error);
     }
-  },
-  actions: {
+
     async fetchTemplates({ commit }) {
       try {
         const response = await axios.get('/api/templates');
