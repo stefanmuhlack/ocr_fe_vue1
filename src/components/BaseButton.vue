@@ -1,11 +1,38 @@
-import BaseButton from './components/BaseButton.vue'
+<template>
+  <button :class="['base-button', buttonType]" @click="onClick">
+    <slot></slot>
+  </button>
+</template>
 
-Vue.component('BaseButton', BaseButton)
+<script>
+export default {
+  name: 'BaseButton',
+  props: {
+    buttonType: {
+      type: String,
+      default: 'default'
+    }
+  },
+  methods: {
+    onClick(event) {
+      this.$emit('click', event);
+    }
+  }
+};
+</script>
 
-Vue.mixin({
-methods: {
-globalMethod() {
-// some global method
+<style scoped>
+.base-button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
 }
+.base-button.default {
+  background-color: #007bff;
+  color: white;
 }
-})
+.base-button.primary {
+  background-color: #0069d9;
+  color: white;
+}
+</style>
