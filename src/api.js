@@ -9,12 +9,31 @@ const api = axios.create({
     timeout: 5000, // Adjust as needed
 });
 
-export default api;
+api.interceptors.request.use(
+    config => {
+        // Add token to headers if available
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
 
 api.interceptors.response.use(
     response => response,
     error => {
         console.error("API request failed:", error);
+        if (error.response && error.response.status === 401) {
+            // Handle unauthorized error, possibly redirect to login
+            alert('Unauthorized access. Please log in.');
+        }
         return Promise.reject(error);
     }
 );
+
+export default api;
+
