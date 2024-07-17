@@ -20,11 +20,22 @@ export default new Vuex.Store({
   mutations: {
     setTemplates(state, templates) {
       state.templates = templates;
+    },
+    setCurrentTemplate(state, template) {
+      state.currentTemplate = template;
+    },
+    setUploadStatus(state, status) {
+      state.uploadStatus = status;
+    },
     setError(state, error) {
-      state.error = `Error: ${error.message}`;
+      state.error = `Error: ${error}`;
       console.error('Vuex Error:', error);
+    },
+    setRecentActivities(state, activities) {
+      state.recentActivities = activities;
     }
-
+  },
+  actions: {
     async fetchTemplates({ commit }) {
       try {
         const response = await axios.get('/api/templates');
@@ -40,19 +51,7 @@ export default new Vuex.Store({
     updateUploadStatus({ commit }, status) {
       commit('setUploadStatus', status);
     },
-    fetchRecentActivities({ commit }) {
-      try {
-        const response = await axios.get('/api/recent-activities');
-        commit('setRecentActivities', response.data);
-      } catch (error) {
-        errorHandler(error, commit);
-      }
-    }
-  }
-});
-      commit('setUploadStatus', status);
-    },
-    fetchRecentActivities({ commit }) {
+    async fetchRecentActivities({ commit }) {
       try {
         const response = await axios.get('/api/recent-activities');
         commit('setRecentActivities', response.data);
