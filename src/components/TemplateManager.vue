@@ -26,22 +26,30 @@ export default defineComponent({
     const error = ref('');
     const templates = ref([]);
 
-    onMounted(() => {
-      store.dispatch('fetchTemplates').catch(e => {
+    const fetchTemplates = async () => {
+      try {
+        await store.dispatch('fetchTemplates');
+        templates.value = store.state.templates;
+      } catch (e) {
         error.value = e.message;
-      });
+      }
+    };
+
+    onMounted(() => {
+      fetchTemplates();
     });
 
     const selectTemplate = (id) => {
       store.commit('setCurrentTemplate', store.state.templates.find(t => t.id === id));
     };
 
-    the deleteTemplate = (id) => {
-      store.dispatch('deleteTemplate', id).then(() => {
-        store.dispatch('fetchTemplates');
-      }).catch(e => {
+    const deleteTemplate = async (id) => {
+      try {
+        await store.dispatch('deleteTemplate', id);
+        fetchTemplates();
+      } catch (e) {
         error.value = e.message;
-      });
+      }
     };
 
     return { error, templates, selectTemplate, deleteTemplate };
@@ -51,6 +59,18 @@ export default defineComponent({
 
 <style scoped>
 .template-manager {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+</style>
   padding: 20px;
   background-color: #f4f4f4;
   border-radius: 8px;
