@@ -9,41 +9,38 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      file: null,
-      uploadStatus: '',
-      uploadError: '',
-      uploading: false,
-      uploadProgress: 0
-    };
-  },
-  methods: {
-    handleFileUpload(event) {
-      const selectedFile = event.target.files[0];
-      if (!this.validateFile(selectedFile)) {
-        this.uploadError = 'Invalid file type or size. Only PDF, TIFF, and PNG files under 5MB are allowed.';
-        return;
-      }
-      this.file = selectedFile;
-      this.uploadStatus = 'File ready for upload';
-      this.uploadError = '';
-    },
-    validateFile(file) {
-      return ['application/pdf', 'image/tiff', 'image/png'].includes(file.type) && file.size <= 5000000;
-    },
-    submitFile() {
-      this.uploading = true;
-      this.uploadStatus = 'Uploading...';
-      setTimeout(() => {
-        this.uploadProgress = 100;
-        this.uploadStatus = 'Upload Successful!';
-        this.uploading = false;
-      }, 1500);
-    }
+<script setup>
+import { ref } from 'vue';
+
+const file = ref(null);
+const uploadStatus = ref('');
+const uploadError = ref('');
+const uploading = ref(false);
+const uploadProgress = ref(0);
+
+const handleFileUpload = (event) => {
+  const selectedFile = event.target.files[0];
+  if (!validateFile(selectedFile)) {
+    uploadError.value = 'Invalid file type or size. Only PDF, TIFF, and PNG files under 5MB are allowed.';
+    return;
   }
+  file.value = selectedFile;
+  uploadStatus.value = 'File ready for upload';
+  uploadError.value = '';
+};
+
+const validateFile = (file) => {
+  return ['application/pdf', 'image/tiff', 'image/png'].includes(file.type) && file.size <= 5000000;
+};
+
+const submitFile = () => {
+  uploading.value = true;
+  uploadStatus.value = 'Uploading...';
+  setTimeout(() => {
+    uploadProgress.value = 100;
+    uploadStatus.value = 'Upload Successful!';
+    uploading.value = false;
+  }, 1500);
 };
 </script>
 
@@ -62,6 +59,8 @@ export default {
 .status {
   color: green;
 }
+</style>
+
 </style>
 
 
