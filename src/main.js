@@ -15,6 +15,12 @@ app.mount('#app');
 // Global error handler for Vue application
 app.config.errorHandler = (err, vm, info) => {
   console.error(`Error: ${err.toString()}\nInfo: ${info}`);
+  app.config.globalProperties.$toast.error(`An error occurred: ${err.message}`);
+};
+
+// Global error handler for Vue application
+app.config.errorHandler = (err, vm, info) => {
+  console.error(`Error: ${err.toString()}\nInfo: ${info}`);
   app.provide('toast').error(`An error occurred: ${err.message}`);
 };
 
