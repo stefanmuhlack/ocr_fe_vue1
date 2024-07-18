@@ -57,6 +57,32 @@ export default defineComponent({
       }
     };
 
+    const fetchTemplates = async () => {
+      try {
+        await store.dispatch('fetchTemplates');
+        templates.value = store.state.templates;
+      } catch (e) {
+        error.value = e.message;
+      }
+    };
+
+    onMounted(() => {
+      fetchTemplates();
+    });
+
+    const selectTemplate = (id) => {
+      selectedTemplate.value = store.state.templates.find(t => t.id === id);
+    };
+
+    const deleteTemplate = async (id) => {
+      try {
+        await store.dispatch('deleteTemplate', id);
+        fetchTemplates();
+      } catch (e) {
+        error.value = e.message;
+      }
+    };
+
     const saveTemplateFields = async () => {
       try {
         const fields = getRectangles(); // Function from DrawingCanvas to get drawn rectangles
