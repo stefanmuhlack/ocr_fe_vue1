@@ -25,6 +25,15 @@ export default {
       });
       return text;
     },
+
+    highlightedText() {
+      let text = this.ocrText;
+      this.fields.forEach(field => {
+        const regex = new RegExp(`(${field.name})`, 'gi');
+        text = text.replace(regex, '<span class="highlight">$1</span>');
+      });
+      return text;
+    },
   },
 };
 </script>
