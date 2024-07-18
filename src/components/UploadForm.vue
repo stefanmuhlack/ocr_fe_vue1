@@ -33,6 +33,21 @@ const validateFile = (file) => {
   return ['application/pdf', 'image/tiff', 'image/png'].includes(file.type) && file.size <= 5000000;
 };
 
+const handleFileUpload = (event) => {
+  const selectedFile = event.target.files[0];
+  if (!validateFile(selectedFile)) {
+    uploadError.value = 'Invalid file type or size. Only PDF, TIFF, and PNG files under 5MB are allowed.';
+    return;
+  }
+  file.value = selectedFile;
+  uploadStatus.value = 'File ready for upload';
+  uploadError.value = '';
+};
+
+const validateFile = (file) => {
+  return ['application/pdf', 'image/tiff', 'image/png'].includes(file.type) && file.size <= 5000000;
+};
+
 const submitFile = () => {
   uploading.value = true;
   uploadStatus.value = 'Uploading...';
