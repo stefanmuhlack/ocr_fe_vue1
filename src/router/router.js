@@ -1,25 +1,38 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '@/components/Home.vue';
+import UploadPDF from '@/components/UploadPDF.vue';
+import TemplateManagement from '@/components/TemplateManagement.vue';
 
-// Lazy-loaded components
-const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue');
-const UploadPDF = () => import(/* webpackChunkName: "upload-pdf" */ '../components/UploadPDF.vue');
-const OCRResult = () => import(/* webpackChunkName: "ocr-result" */ '../components/OCRResult.vue');
-const PDFPreview = () => import(/* webpackChunkName: "pdf-preview" */ '../components/PDFPreview.vue');
-const TemplateCreator = () => import(/* webpackChunkName: "template-creator" */ '../components/TemplateCreator.vue');
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/upload',
+    name: 'UploadPDF',
+    component: UploadPDF
+  },
+  {
+    path: '/templates',
+    name: 'TemplateManagement',
+    component: TemplateManagement
+  }
+];
 
-Vue.use(Router);
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
 
-export default new Router({
-    mode: 'history',
-    base: process.env.BASE_URL,
-    routes: [
-        {
-            path: '/',
-            name: 'home',
-            component: Home
-        },
-        {
+router.beforeEach((to, from, next) => {
+  console.log(`Navigating to ${to.name} from ${from.name}`);
+  next();
+});
+
+export default router;
+
             path: '/upload',
             name: 'upload-pdf',
             component: UploadPDF
