@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useLogger } from '@/composables/logger';
 
 const canvasRef = ref(null);
+const logger = useLogger();
 
 onMounted(() => {
   const canvas = canvasRef.value;
@@ -9,9 +11,12 @@ onMounted(() => {
     const context = canvas.getContext('2d');
     let isDrawing = false;
 
+    logger.info('Canvas mounted and context initialized.');
+
     canvas.addEventListener('mousedown', () => {
       isDrawing = true;
       context.beginPath();
+      logger.info('Mouse down event: Drawing started.');
     });
 
     canvas.addEventListener('mousemove', (event) => {
@@ -24,12 +29,16 @@ onMounted(() => {
     canvas.addEventListener('mouseup', () => {
       isDrawing = false;
       context.closePath();
+      logger.info('Mouse up event: Drawing ended.');
     });
 
     canvas.addEventListener('mouseout', () => {
       isDrawing = false;
       context.closePath();
+      logger.info('Mouse out event: Drawing ended.');
     });
+  } else {
+    logger.error('Canvas element not found.');
   }
 });
 </script>
@@ -46,3 +55,4 @@ canvas {
   margin: 20px auto;
 }
 </style>
+
