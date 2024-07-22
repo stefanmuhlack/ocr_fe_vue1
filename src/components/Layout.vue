@@ -1,25 +1,48 @@
 <!-- src/components/Layout.vue -->
 
 <template>
-  <div>
+  <div class="layout">
     <header>
-      <!-- Your header content here -->
+      <nav>
+        <router-link to="/">Home</router-link>
+        <router-link to="/upload">Upload PDF</router-link>
+        <router-link to="/templates">Templates</router-link>
+      </nav>
     </header>
     <main>
-      <slot></slot>
+      <router-view></router-view>
     </main>
     <footer>
-      <!-- Your footer content here -->
+      <p>&copy; 2024 OCR System</p>
     </footer>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Layout',
+  name: 'Layout'
 };
 </script>
 
-<style>
-/* Add your CSS styles for the layout here */
+<style scoped>
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header, footer {
+  background-color: #f4f4f4;
+  padding: 10px;
+}
+
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+main {
+  flex: 1;
+}
 </style>
+
