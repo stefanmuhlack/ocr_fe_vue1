@@ -1,30 +1,47 @@
 <template>
-  <div>
-    <img :src="thumbnailSrc" alt="PDF Thumbnail" @click="onThumbnailClick" />
+  <div class="pdf-preview">
+    <img :src="imageSrc" @error="onError" @load="onLoad" alt="PDF preview" />
+    <div v-if="error" class="error-message">{{ error }}</div>
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  thumbnailSrc: {
-    type: String,
-    required: true
+<script>
+import { ref } from 'vue';
+import { useLogger } from '@/composables/logger';
+
+export default {
+  name: 'PDFPreview',
+  props: {
+    imageSrc: {
+      type: String,
+      required: true
+    }
+  },
+  setup() {
+    const logger = useLogger();
+    const error = ref('');
+
+    const onError = () => {
+      error.value = 'Failed to load image';
+      logger.error('Error loading PDF preview image');
+    };
+
+    const onLoad = () => {
+      logger.info('PDF preview image loaded successfully');
+    };
+
+    return { error, onError, onLoad };
   }
-});
-
-const emit = defineEmits(['thumbnailClicked']);
-
-const onThumbnailClick = () => {
-  emit('thumbnailClicked');
 };
 </script>
 
 <style scoped>
-img {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
-  height: auto;
+.pdf-preview {
+  text-align: center;
+}
+
+.error-message {
+  color: red;
 }
 </style>
 
