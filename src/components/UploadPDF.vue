@@ -1,25 +1,61 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router/router'
-import Vuex from 'vuex'
+<template>
+  <div class="upload-pdf">
+    <h2>Upload PDF</h2>
+    <input type="file" @change="onFileChange" />
+    <button @click="uploadPDF">Upload</button>
+    <div v-if="error" class="error-message">{{ error }}</div>
+  </div>
+</template>
 
-Vue.config.productionTip = false
+<script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useLogger } from '@/composables/logger';
 
-// Use Vuex
-Vue.use(Vuex)
+export default {
+  name: 'UploadPDF',
+  setup() {
+    const store = useStore();
+    const logger = useLogger();
+    const error = ref('');
+    const selectedFile = ref(null);
 
-// Create a new Vuex store
-const store = new Vuex.Store({
-state: {
-// your state here
-},
-mutations: {
-// your mutations here
+    const onFileChange = (event) => {
+      selectedFile.value = event.target.files[0];
+      logger.info(`File selected: ${selectedFile.value.name}`);
+    };
+
+    const uploadPDF = async () => {
+      if (!selectedFile.value) {
+        error.value = 'No file selected';
+        logger.error('Upload failed: No file selected');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', selectedFile.value);
+
+      try {
+        await store.dispatch('uploadPDF', formData);
+        logger.info('PDF uploaded successfully');
+      } catch (e) {
+        error.value = e.message;
+        logger.error(`Upload failed: ${e.message}`);
+      }
+    };
+
+    return { error, onFileChange, uploadPDF };
+  }
+};
+</script>
+
+<style scoped>
+.upload-pdf {
+  padding: 20px;
 }
-})
 
-new Vue({
-router,
-store,  // Add the store to the Vue instance
-render: h => h(App)
-}).$mount('#app')
+.error-message {
+  color: red;
+}
+</style>
+
