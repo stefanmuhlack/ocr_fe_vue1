@@ -21,6 +21,7 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import DrawingCanvas from './DrawingCanvas.vue';
+import { useLogger } from '@/composables/logger';
 
 export default defineComponent({
   name: 'TemplateManager',
@@ -30,13 +31,16 @@ export default defineComponent({
     const error = ref('');
     const templates = ref([]);
     const selectedTemplate = ref(null);
+    const logger = useLogger();
 
     const fetchTemplates = async () => {
       try {
         await store.dispatch('fetchTemplates');
         templates.value = store.state.templates;
+        logger.info('Templates fetched successfully');
       } catch (e) {
         error.value = e.message;
+        logger.error(`Failed to fetch templates: ${e.message}`);
       }
     };
 
@@ -52,34 +56,10 @@ export default defineComponent({
       try {
         await store.dispatch('deleteTemplate', id);
         fetchTemplates();
+        logger.info(`Template with id ${id} deleted successfully`);
       } catch (e) {
         error.value = e.message;
-      }
-    };
-
-    const fetchTemplates = async () => {
-      try {
-        await store.dispatch('fetchTemplates');
-        templates.value = store.state.templates;
-      } catch (e) {
-        error.value = e.message;
-      }
-    };
-
-    onMounted(() => {
-      fetchTemplates();
-    });
-
-    const selectTemplate = (id) => {
-      selectedTemplate.value = store.state.templates.find(t => t.id === id);
-    };
-
-    const deleteTemplate = async (id) => {
-      try {
-        await store.dispatch('deleteTemplate', id);
-        fetchTemplates();
-      } catch (e) {
-        error.value = e.message;
+        logger.error(`Failed to delete template: ${e.message}`);
       }
     };
 
@@ -90,8 +70,10 @@ export default defineComponent({
           ...selectedTemplate.value,
           fields,
         });
+        logger.info('Template fields saved successfully');
       } catch (e) {
         error.value = e.message;
+        logger.error(`Failed to save template fields: ${e.message}`);
       }
     };
 
@@ -112,6 +94,8 @@ export default defineComponent({
 .error-message {
   color: red;
   margin-bottom: 10px;
+}
+</style>
 }
 </style>
 
