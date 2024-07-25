@@ -96,6 +96,29 @@ export default defineComponent({
   margin-bottom: 10px;
 }
 </style>
+
+      }
+    };
+
+    return { error, templates, selectedTemplate, selectTemplate, deleteTemplate, saveTemplateFields };
+  }
+});
+</script>
+
+<style scoped>
+.template-manager {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+</style>
 }
 </style>
 
