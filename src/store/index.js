@@ -91,6 +91,13 @@ export default new Vuex.Store({
   }
 });
 
+    updateUploadStatus({ commit }, status) {
+      commit('setUploadStatus', status);
+      logger.info('Updated upload status:', status);
+    }
+  }
+});
+
 
 export default new Vuex.Store({
   state: {
