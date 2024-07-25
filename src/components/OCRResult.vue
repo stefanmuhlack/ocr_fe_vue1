@@ -58,9 +58,6 @@ export default {
 }
 </style>
 
-.highlight {
-  background-color: yellow;
-}
 </style>
 
 <template>
