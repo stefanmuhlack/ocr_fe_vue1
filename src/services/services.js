@@ -29,13 +29,16 @@ apiClient.interceptors.response.use(response => {
 
 export default apiClient;
 
+export const uploadPDF = async (file) => {
+  try {
     const formData = new FormData();
     formData.append('pdf', file);
 
     const response = await apiClient.post('/upload', formData);
     return response.data;
   } catch (error) {
-    console.error('Error uploading PDF:', error);
+    logger.error('Error uploading PDF:', error.message);
     throw error;
   }
 };
+
