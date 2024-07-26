@@ -18,12 +18,6 @@ app.config.errorHandler = (err, vm, info) => {
   app.config.globalProperties.$toast.error(`An error occurred: ${err.message}`);
 };
 
-// Global error handler for Vue application
-app.config.errorHandler = (err, vm, info) => {
-  console.error(`Error: ${err.toString()}\nInfo: ${info}`);
-  app.provide('toast').error(`An error occurred: ${err.message}`);
-};
-
   methods: {
     notify(message, type) {
       // Implement notification logic here, could integrate with a UI framework's notification system
